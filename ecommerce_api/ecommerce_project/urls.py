@@ -21,5 +21,5 @@ from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('tasks.urls')),  # Include all task app endpoints
+    path('api/', include('tasks.urls')),  
 ]
