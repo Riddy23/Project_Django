@@ -1,22 +1,17 @@
 from rest_framework import serializers
-from .models import Category, Product
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'description']
-
+from .models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    category_id = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(), source='category', write_only=True
-    )
+    discounted_price = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = [
-            'id', 'name', 'description', 'price', 'category', 'category_id',
-            'stock_quantity', 'image_url', 'created_at'
+            'id', 'name', 'description', 'price',
+            'discount_percent', 'discounted_price',
+            'category', 'stock', 'created_at'
         ]
-      
+
+    def get_discounted_price(self, obj):
+        return obj.discounted_price()
+        
